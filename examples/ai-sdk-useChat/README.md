@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Gemini Chatbot UI
 
-## Getting Started
+This example shows how to build a lightweight chatbot interface with [Next.js](https://nextjs.org), [`@ai-sdk/react`](https://github.com/vercel/ai), and a Mastra agent that talks to Google Gemini.
 
-First, run the development server:
+You get a single-page interface with streaming replies, Markdown-friendly rendering, and bilingual (VN/EN) instructions so Gemini can answer however your users prefer.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Quick start
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Install dependencies from the repo root (needed once):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```bash
+   pnpm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Inside this example (`examples/ai-sdk-useChat`), create `.env.local` and add your Gemini key:
 
-## Learn More
+   ```bash
+   GOOGLE_API_KEY=your_google_ai_studio_key
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+   Get an API key from [ai.google.dev](https://ai.google.dev/gemini-api/docs/api-key).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Run the dev server:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   pnpm dev
+   ```
 
-## Deploy on Vercel
+4. Open [http://localhost:3000](http://localhost:3000) and start chatting.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## How it works
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/page.tsx` renders a simple UI powered by `useChat` from `@ai-sdk/react`.
+- `app/api/chat/route.ts` forwards messages to `geminiChatAgent`.
+- `src/mastra/agents/index.ts` defines that agent with the `google('gemini-2.0-flash-001')` model, so you can customize tone or tools in one place.
+
+Feel free to tweak the styling, change the prompt, or swap in another Gemini model variant depending on latency/cost requirements.

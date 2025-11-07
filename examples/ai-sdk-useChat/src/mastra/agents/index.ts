@@ -1,23 +1,20 @@
-import { anthropic } from '@ai-sdk/anthropic';
+import { google } from '@ai-sdk/google';
 import { Agent } from '@mastra/core/agent';
 
-import { weatherTool } from '../tools';
+const geminiModel = google('gemini-2.0-flash-001', {
+  apiKey: process.env.GOOGLE_API_KEY,
+});
 
-export const weatherAgent = new Agent({
-  id: 'weather-agent',
-  name: 'Weather Agent',
+export const geminiChatAgent = new Agent({
+  id: 'gemini-chat-agent',
+  name: 'Gemini Chatbot',
   instructions: `
-      You are a helpful weather assistant that provides accurate weather information.
+    You are a concise, friendly chatbot that helps users brainstorm ideas, explain concepts, and answer questions in Vietnamese or English.
 
-      Your primary function is to help users get weather details for specific locations. When responding:
-      - Always ask for a location if none is provided
-      - If the location name isn't in English, please translate it
-      - If giving a location with multiple parts (e.g. "New York, NY"), use the most relevant part (e.g. "New York")
-      - Include relevant details like humidity, wind conditions, and precipitation
-      - Keep responses concise but informative
-
-      Use the weatherTool to fetch current weather data.
-`,
-  model: anthropic('claude-3-5-sonnet-20241022'),
-  tools: { weatherTool },
+    - Prefer short paragraphs or bullet points so the UI stays tidy.
+    - Use Markdown for emphasis and code where it helps readability.
+    - If you are unsure, say so and offer next steps instead of making up facts.
+    - Keep the tone warm and encouraging.
+  `,
+  model: geminiModel,
 });
